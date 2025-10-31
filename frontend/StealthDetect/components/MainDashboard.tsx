@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 import { Shield, Play, RefreshCw, FileText, Pause, Globe, Map, Clock, Zap, Activity, ArrowLeft, ChevronRight, Settings, MoreHorizontal } from "lucide-react";
 
 interface MainDashboardProps {
@@ -15,11 +15,16 @@ interface MainDashboardProps {
 export function MainDashboard({ onNavigate }: MainDashboardProps) {
   const [domain, setDomain] = useState("");
   const [isScanning, setIsScanning] = useState(false);
+  const scanTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleStartScan = () => {
+    if (isScanning) {
+      return;
+    }
+
     setIsScanning(true);
     // Simulate scan start delay
-    setTimeout(() => {
+    scanTimeoutRef.current = setTimeout(() => {
       onNavigate("scan-progress");
     }, 500);
   };
@@ -33,11 +38,23 @@ export function MainDashboard({ onNavigate }: MainDashboardProps) {
   };
 
   const handleWhitelistDomain = () => {
-    if (domain.trim()) {
-      // Handle whitelisting logic here
-      setDomain("");
+    const trimmedDomain = domain.trim().toLowerCase();
+    if (!trimmedDomain) {
+      return;
     }
+
+    // Handle whitelisting logic here
+    setDomain("");
   };
+
+  useEffect(() => {
+    return () => {
+      if (scanTimeoutRef.current) {
+        clearTimeout(scanTimeoutRef.current);
+        scanTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <div className="w-full min-h-screen bg-background">
@@ -69,7 +86,7 @@ export function MainDashboard({ onNavigate }: MainDashboardProps) {
 
         {/* Status Banner - Mobile */}
         <div className="lg:hidden mb-6">
-          <div className="p-4 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-200/30 rounded-xl">
+          <div className="p-4 bg-linear-to-r from-green-500/10 to-emerald-500/10 border border-green-200/30 rounded-xl">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-green-500/20 rounded-lg">
@@ -264,7 +281,9 @@ export function MainDashboard({ onNavigate }: MainDashboardProps) {
                   </div>
                   <DialogFooter>
                     <Button variant="outline" onClick={() => setDomain("")}>Cancel</Button>
-                    <Button onClick={handleWhitelistDomain}>Add to Whitelist</Button>
+                    <Button onClick={handleWhitelistDomain} disabled={!domain.trim()}>
+                      Add to Whitelist
+                    </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>

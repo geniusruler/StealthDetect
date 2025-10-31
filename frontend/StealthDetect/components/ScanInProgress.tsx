@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Progress } from "./ui/progress";
-import { ScrollArea } from "./ui/scroll-area";
-import { Badge } from "./ui/badge";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Progress } from "../ui/progress";
+import { ScrollArea } from "../ui/scroll-area";
+import { Badge } from "../ui/badge";
 import { Radar, Pause, Square, Minimize2, CheckCircle, Circle, Clock } from "lucide-react";
 
 interface ScanInProgressProps {

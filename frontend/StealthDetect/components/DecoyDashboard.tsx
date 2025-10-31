@@ -1,5 +1,5 @@
 import { Button } from "../ui/button";
-import { toast } from "sonner";
+import { showToast } from "../lib/toast";
 import {
   HardDrive,
   Battery,
@@ -16,24 +16,21 @@ interface DecoyDashboardProps {
 
 export function DecoyDashboard({ onExit }: DecoyDashboardProps) {
   const showBatteryTips = () => {
-    toast("💡 Battery Tips", {
-      description: "• Enable battery optimization\n• Reduce screen brightness\n• Limit background app refresh",
-      duration: 4000,
-    });
+    showToast(
+      "💡 Battery Tips",
+      "• Enable battery optimization\n• Reduce screen brightness\n• Limit background app refresh",
+    );
   };
 
   const showCleanupComplete = () => {
-    toast("✅ Cleanup completed", {
-      description: "Temporary files removed successfully",
-      duration: 3000,
-    });
+    showToast(
+      "✅ Cleanup completed",
+      "Temporary files removed successfully",
+    );
   };
 
   const showNetworkCheck = () => {
-    toast("🌐 Network Check", {
-      description: "All connections are stable",
-      duration: 3000,
-    });
+    showToast("🌐 Network Check", "All connections are stable");
   };
 
   return (

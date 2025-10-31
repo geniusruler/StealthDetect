@@ -1,6 +1,25 @@
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+type SetupStep =
+  | "start"
+  | "welcome"
+  | "permissions"
+  | "main-pin"
+  | "duress-pin"
+  | "ready"
+  | "home"
+  | "dashboard-pin"
+  | "main-dashboard"
+  | "faq"
+  | "decoy"
+  | "setup-pins"
+  | "enter-pin"
+  | "scan-progress"
+  | "scan-report"
+  | "network-map";
+
+
 import {
   Radar,
   Play,
@@ -15,7 +34,7 @@ import {
 } from "lucide-react";
 
 interface HomeScreenProps {
-  onNavigate: (screen: string) => void;
+  onNavigate: React.Dispatch<React.SetStateAction<SetupStep>>;
 }
 
 export function HomeScreen({ onNavigate }: HomeScreenProps) {
@@ -43,7 +62,7 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
 
       {/* Status Banner */}
       <div className="px-4 sm:px-5 py-4">
-        <div className="flex items-center justify-between p-4 bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-200/30 rounded-xl">
+        <div className="flex items-center justify-between p-4 bg-linear-to-r from-green-500/10 to-emerald-500/10 border border-green-200/30 rounded-xl">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-green-500/20 rounded-lg">
               <Shield className="w-5 h-5 text-green-600" />

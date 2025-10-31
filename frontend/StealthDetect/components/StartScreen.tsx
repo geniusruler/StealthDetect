@@ -1,4 +1,4 @@
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import { Shield, ChevronRight } from "lucide-react";
 
 interface StartScreenProps {

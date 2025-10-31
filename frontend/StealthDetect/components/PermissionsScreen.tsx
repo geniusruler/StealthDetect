@@ -1,5 +1,5 @@
-import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import { Settings, ChevronRight } from "lucide-react";
 
 interface PermissionsScreenProps {
@@ -48,15 +48,15 @@ export function PermissionsScreen({
           <div className="w-full max-w-sm space-y-4">
             <div className="flex items-start gap-3 p-4 bg-muted rounded-lg">
               <Checkbox
-                checked={permissions.systemUsage}
-                onCheckedChange={(checked) =>
-                  onPermissionChange({
-                    ...permissions,
-                    systemUsage: !!checked,
-                  })
-                }
-                className="mt-0.5"
-              />
+  checked={permissions.systemUsage}
+  onCheckedChange={(checked: boolean | "indeterminate") =>
+    onPermissionChange({
+      ...permissions,
+      systemUsage: Boolean(checked),
+    })
+  }
+  className="mt-0.5"
+/>
               <div className="flex-1 text-left">
                 <p className="text-sm">
                   VPN Configuration Profile
@@ -66,15 +66,15 @@ export function PermissionsScreen({
 
             <div className="flex items-start gap-3 p-4 bg-muted rounded-lg">
               <Checkbox
-                checked={permissions.notifications}
-                onCheckedChange={(checked) =>
-                  onPermissionChange({
-                    ...permissions,
-                    notifications: !!checked,
-                  })
-                }
-                className="mt-0.5"
-              />
+  checked={permissions.notifications}
+  onCheckedChange={(checked: boolean | "indeterminate") =>
+    onPermissionChange({
+      ...permissions,
+      notifications: Boolean(checked),
+    })
+  }
+  className="mt-0.5"
+/>
               <div className="flex-1 text-left">
                 <p className="text-sm">
                   Notifications (optional)
