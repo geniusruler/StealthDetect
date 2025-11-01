@@ -5,6 +5,7 @@ import {
   useCallback,
   useRef,
 } from "react";
+
 import {
   Platform,
   ScrollView,
@@ -13,6 +14,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -27,7 +29,8 @@ import { PermissionsScreen } from "./components/PermissionsScreen";
 import { HomeScreen } from "./components/HomeScreen";
 import { MainDashboard } from "./components/MainDashboard";
 import { ScanInProgress } from "./components/ScanInProgress";
-import { ScanReport } from "./components/ScanReport";
+import { ScanReport } from "./components/ScanReport"
+
 
 import {
   ChevronRight,
@@ -38,6 +41,9 @@ import {
   ChevronUp,
   HelpCircle,
 } from "lucide-react";
+
+// Import: SQLite Local Database
+import { initDB } from "./db/db";
 
 type SetupStep =
   | "start"
@@ -1339,9 +1345,14 @@ const nativeStyles = StyleSheet.create({
 });
 
 export default function App() {
-  if (Platform.OS === "web") {
-    return <WebApp />;
-  }
+    // Init: Database connection
+    useEffect(() => {
+        initDB();
+    }, []);
 
-  return <NativeApp />;
+    if (Platform.OS === "web") {
+        return <WebApp />;
+    }
+
+    return <NativeApp />;
 }
