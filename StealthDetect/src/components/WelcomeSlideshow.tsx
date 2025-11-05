@@ -1,4 +1,4 @@
-g your simport { useState } from "react";
+import { useState } from "react";
 import { Button } from "./ui/button";
 import { Shield, Lock, Eye, Activity, Wifi, ChevronRight } from "lucide-react";
 
@@ -37,7 +37,7 @@ const slides = [
     content: (
       <div className="space-y-4 text-center">
         <p className="text-muted-foreground">
-          Quick access with fingerprint or Face ID, backed by PIN security for complete protection.
+          Quick access by PIN security for complete protection.
         </p>
       </div>
     ),
