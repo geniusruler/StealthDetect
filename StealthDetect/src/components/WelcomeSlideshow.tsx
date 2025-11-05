@@ -1,4 +1,4 @@
-import { useState } from "react";
+g your simport { useState } from "react";
 import { Button } from "./ui/button";
 import { Shield, Lock, Eye, Activity, Wifi, ChevronRight } from "lucide-react";
 
@@ -11,7 +11,7 @@ const slides = [
     content: (
       <div className="space-y-4 text-center">
         <p className="text-muted-foreground">
-          Your privacy matters. StealthDetect keeps your data secure while monitoring your system health.
+          Your privacy matters. StealthDetect checks for stalkerware on your device using your wireless traffic.
         </p>
       </div>
     ),
