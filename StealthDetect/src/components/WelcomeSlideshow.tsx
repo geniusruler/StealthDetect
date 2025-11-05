@@ -32,7 +32,7 @@ const slides = [
   {
     id: "secure",
     title: "Secure Access",
-    subtitle: "Biometrics + PIN for fast, safe unlock.",
+    subtitle: "PIN for safe unlock.",
     icon: <Eye className="w-16 h-16 text-primary" />,
     content: (
       <div className="space-y-4 text-center">
@@ -50,7 +50,7 @@ const slides = [
     content: (
       <div className="space-y-4 text-center">
         <p className="text-muted-foreground">
-          All sensitive data is protected using your device's full disk encryption.
+          All sensitive data is protected using your device's full disk or file encryption.
         </p>
       </div>
     ),
@@ -71,7 +71,7 @@ const slides = [
   {
     id: "future",
     title: "Detection Ready",
-    subtitle: "VPN monitor stub for upcoming network insights.",
+    subtitle: "VPN monitor for detecting Indicators of Compromise (IoCs)",
     icon: <Wifi className="w-16 h-16 text-primary" />,
     content: (
       <div className="space-y-4 text-center">
