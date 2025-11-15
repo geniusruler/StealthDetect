@@ -2,7 +2,6 @@ import {
   useState,
   useEffect,
   useCallback,
-  useRef,
 } from "react";
 
 import {
@@ -13,7 +12,6 @@ import {
   View,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { showToast } from "./lib/toast";
@@ -39,6 +37,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 
+import { Platform } from "react-native";
 import { SQLiteProvider } from "expo-sqlite";
 
 // Move platform detection outside component to avoid recalculation
@@ -214,63 +213,58 @@ export function WebApp() {
 
   if (showExplainer) {
     return (
-      <div className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
+      <View className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center px-5 py-4 h-14">
-          <button
-            onClick={() => setShowExplainer(false)}
-            className="text-muted-foreground"
+        <View className="flex justify-between items-center px-5 py-4 h-14 flex-row">
+          <TouchableOpacity
+            onPress={() => setShowExplainer(false)}
           >
-            ← Back
-          </button>
-          <h1 className="font-medium text-foreground">
+            <Text className="text-muted-foreground">← Back</Text>
+          </TouchableOpacity>
+          <Text className="font-medium text-foreground">
             About StealthDetect
-          </h1>
-          <div className="w-12" />
-        </div>
+          </Text>
+          <View className="w-12" />
+        </View>
 
         {/* Explainer Content */}
-        <div className="flex-1 px-5 py-8">
-          <div className="space-y-6">
-            <div className="text-center mb-8">
+        <View className="flex-1 px-5 py-8">
+          <View className="space-y-6">
+            <View className="text-center mb-8 items-center">
               <Shield className="w-20 h-20 text-primary mx-auto mb-4" />
-              <h2 className="mb-2">Privacy by Design</h2>
-              <p className="text-muted-foreground">
-                StealthDetect is built with privacy as the
-                foundation, not an afterthought.
-              </p>
-            </div>
+              <Text className="mb-2 text-lg font-semibold">
+                Privacy by Design
+              </Text>
+              <Text className="text-muted-foreground text-center">
+                StealthDetect is built with privacy as the foundation, not an afterthought.
+              </Text>
+            </View>
 
-            <div className="space-y-4">
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">No Data Collection</h3>
-                <p className="text-sm text-muted-foreground">
-                  We don't collect, store, or transmit your
-                  personal information. Everything stays on your
-                  device.
-                </p>
-              </div>
+            <View className="space-y-4">
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">No Data Collection</Text>
+                <Text className="text-sm text-muted-foreground">
+                  We don't collect, store, or transmit your personal information. Everything stays on your device.
+                </Text>
+              </View>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">Open Source Ready</h3>
-                <p className="text-sm text-muted-foreground">
-                  Our architecture is designed for transparency.
-                  Audit the code, verify the promises.
-                </p>
-              </div>
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">Open Source Ready</Text>
+                <Text className="text-sm text-muted-foreground">
+                  Our architecture is designed for transparency. Audit the code, verify the promises.
+                </Text>
+              </View>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">Minimal Permissions</h3>
-                <p className="text-sm text-muted-foreground">
-                  Only requests essential system access needed
-                  for health monitoring. No unnecessary
-                  permissions.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">Minimal Permissions</Text>
+                <Text className="text-sm text-muted-foreground">
+                  Only requests essential system access needed for health monitoring. No unnecessary permissions.
+                </Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      </View>
     );
   }
 
@@ -373,132 +367,108 @@ export function WebApp() {
   if (setupStep === "main-pin") {
     if (showSecurityInfo) {
       return (
-        <div className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
+        <View className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
           {/* Header */}
-          <div className="flex justify-between items-center px-5 py-4 h-14">
-            <button
-              onClick={() => setShowSecurityInfo(false)}
-              className="text-muted-foreground"
+          <View className="flex justify-between items-center px-5 py-4 h-14 flex-row">
+            <TouchableOpacity
+              onPress={() => setShowSecurityInfo(false)}
             >
-              ← Back
-            </button>
-            <h1 className="font-medium text-foreground">
+              <Text className="text-muted-foreground">← Back</Text>
+            </TouchableOpacity>
+            <Text className="font-medium text-foreground">
               Security Info
-            </h1>
-            <div className="w-12" />
-          </div>
+            </Text>
+            <View className="w-12" />
+          </View>
 
           {/* Security Info Content */}
-          <div className="flex-1 px-5 py-8">
-            <div className="space-y-6">
-              <div className="text-center mb-8">
+          <View className="flex-1 px-5 py-8">
+            <View className="space-y-6">
+              <View className="text-center mb-8 items-center">
                 <Shield className="w-20 h-20 text-primary mx-auto mb-4" />
-                <h2 className="mb-2">
+                <Text className="mb-2 text-lg font-semibold">
                   {isIOSDevice
                     ? "How Your Data Is Secured on iOS"
                     : "How Your Data Is Secured on iOS and Android"}
-                </h2>
-              </div>
+                </Text>
+              </View>
 
-              <div className="space-y-4">
+              <View className="space-y-4">
                 {isIOSDevice ? (
-                  <div className="p-4 bg-muted rounded-lg">
-                    <p className="text-sm text-muted-foreground">
-                      On iOS, setting a passcode for your device
-                      automatically enables hardware-level file
-                      encryption.
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      StealthDetect leverages this protection,
-                      meaning all app data stored on your device
-                      is already encrypted by the operating
-                      system. Your PIN adds a second layer of
-                      security for accessing the app itself.
-                    </p>
-                  </div>
+                  <View className="p-4 bg-muted rounded-lg">
+                    <Text className="text-sm text-muted-foreground">
+                      On iOS, setting a passcode for your device automatically enables hardware-level file encryption.
+                    </Text>
+                    <Text className="text-sm text-muted-foreground mt-2">
+                      StealthDetect leverages this protection, meaning all app data stored on your device is already encrypted by the operating system. Your PIN adds a second layer of security for accessing the app itself.
+                    </Text>
+                  </View>
                 ) : (
                   <>
-                    <div className="p-4 bg-muted rounded-lg">
-                      <p className="text-sm text-muted-foreground">
-                        StealthDetect stores all data in the
-                        app's private sandboxed storage. For
-                        maximum protection, we recommend
-                        enabling device encryption.
-                      </p>
-                    </div>
+                    <View className="p-4 bg-muted rounded-lg">
+                      <Text className="text-sm text-muted-foreground">
+                        StealthDetect stores all data in the app's private sandboxed storage. For maximum protection, we recommend enabling device encryption.
+                      </Text>
+                    </View>
 
-                    <div className="p-4 bg-muted rounded-lg">
-                      <h3 className="mb-2">
+                    <View className="p-4 bg-muted rounded-lg">
+                      <Text className="mb-2 font-semibold">
                         How do I know if my phone is encrypted?:
-                      </h3>
-                      <ul className="text-sm text-muted-foreground space-y-1">
-                        <li>
-                          • On iOS,go to your device's Settings
-                          → Settings → Face (or Touch) ID &
-                          Passcode.
-                        </li>
-                        <li>
-                          • Enable a strong passcode or
-                          passphrase
-                        </li>
-                        <li>
-                          • On modern Android devices, users
-                          will have to enable encryption in
-                          their settings depending on their
-                          device.
-                        </li>
-                      </ul>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        When full disk encryption is active, it
-                        uses your device's Secure Element (SE)
-                        to protect the encryption keys, making
-                        your data unreadable without your
-                        passcode or PIN. On iOS, this is
-                        protected by the Secure Enclave.
-                      </p>
-                    </div>
+                      </Text>
+                      <Text className="text-sm text-muted-foreground">
+                        • On iOS, go to Settings → Face (or Touch) ID & Passcode.
+                      </Text>
+                      <Text className="text-sm text-muted-foreground">
+                        • Enable a strong passcode or passphrase.
+                      </Text>
+                      <Text className="text-sm text-muted-foreground">
+                        • On modern Android devices, enable encryption in system settings (varies by device).
+                      </Text>
+                      <Text className="text-sm text-muted-foreground mt-2">
+                        When full disk encryption is active, it uses your device's Secure Element to protect the encryption keys, making your data unreadable without your passcode or PIN.
+                      </Text>
+                    </View>
                   </>
                 )}
-              </div>
-            </div>
-          </div>
-        </div>
+              </View>
+            </View>
+          </View>
+        </View>
       );
     }
 
     return (
-      <div className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
+      <View className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center px-5 py-4 h-14">
-          <button
-            onClick={() => setSetupStep("permissions")}
-            className="text-muted-foreground"
+        <View className="flex justify-between items-center px-5 py-4 h-14 flex-row">
+          <TouchableOpacity
+            onPress={() => setSetupStep("permissions")}
           >
-            ← Back
-          </button>
-          <h1 className="font-medium text-foreground">Setup</h1>
-          <div className="w-12" />
-        </div>
+            <Text className="text-muted-foreground">← Back</Text>
+          </TouchableOpacity>
+          <Text className="font-medium text-foreground">Setup</Text>
+          <View className="w-12" />
+        </View>
 
         {/* Content */}
-        <div className="flex-1 px-5 py-8 flex flex-col">
-          <div className="flex-1 flex flex-col items-center text-center space-y-8">
+        <View className="flex-1 px-5 py-8 flex flex-col">
+          <View className="flex-1 flex flex-col items-center text-center space-y-8">
             <Shield className="w-16 h-16 text-primary" />
 
-            <div className="space-y-2 max-w-sm">
-              <h2 className="text-2xl font-medium text-foreground">
+            <View className="space-y-2 max-w-sm items-center">
+              <Text className="text-2xl font-medium text-foreground">
                 Set Main PIN
-              </h2>
-              <p className="text-muted-foreground">
+              </Text>
+              <Text className="text-muted-foreground">
                 Use 4–8 digits to unlock your full data
-              </p>
-            </div>
+              </Text>
+            </View>
 
-            <div className="w-full max-w-sm space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm text-muted-foreground">
+            <View className="w-full max-w-sm space-y-4">
+              <View className="space-y-2">
+                <Text className="text-sm text-muted-foreground">
                   Main PIN
-                </label>
+                </Text>
                 <Input
                   type="password"
                   value={mainPin}
@@ -512,12 +482,12 @@ export function WebApp() {
                   placeholder="Enter 4-8 digits"
                   className="h-12 text-center text-lg tracking-wider"
                 />
-              </div>
+              </View>
 
-              <div className="space-y-2">
-                <label className="text-sm text-muted-foreground">
+              <View className="space-y-2">
+                <Text className="text-sm text-muted-foreground">
                   Confirm PIN
-                </label>
+                </Text>
                 <Input
                   type="password"
                   value={confirmMainPin}
@@ -531,70 +501,69 @@ export function WebApp() {
                   placeholder="Confirm PIN"
                   className="h-12 text-center text-lg tracking-wider"
                 />
-              </div>
+              </View>
 
-              <p className="text-xs text-muted-foreground text-center">
-                Your PIN is stored securely on this device.{" "}
-                <button
-                  onClick={() => setShowSecurityInfo(true)}
+              <Text className="text-xs text-muted-foreground text-center">
+                Your PIN is stored securely on this device.{' '}
+                <Text
                   className="text-primary underline"
+                  onPress={() => setShowSecurityInfo(true)}
                 >
                   Learn more
-                </button>
-              </p>
-            </div>
-          </div>
+                </Text>
+              </Text>
+            </View>
+          </View>
 
           <Button
-            onClick={() => setSetupStep("duress-pin")}
+            onPress={() => setSetupStep("duress-pin")}
             disabled={!canProceedMainPin}
             className="w-full h-12 bg-primary text-primary-foreground rounded-xl disabled:opacity-50"
           >
             Continue
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
-        </div>
-      </div>
+        </View>
+      </View>
     );
   }
 
   if (setupStep === "duress-pin") {
     return (
-      <div className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
+      <View className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center px-5 py-4 h-14">
-          <button
-            onClick={() => setSetupStep("main-pin")}
-            className="text-muted-foreground"
+        <View className="flex justify-between items-center px-5 py-4 h-14 flex-row">
+          <TouchableOpacity
+            onPress={() => setSetupStep("main-pin")}
           >
-            ← Back
-          </button>
-          <h1 className="font-medium text-foreground">Setup</h1>
-          <div className="w-12" />
-        </div>
+            <Text className="text-muted-foreground">← Back</Text>
+          </TouchableOpacity>
+          <Text className="font-medium text-foreground">Setup</Text>
+          <View className="w-12" />
+        </View>
 
         {/* Content */}
-        <div className="flex-1 px-5 py-8 flex flex-col">
-          <div className="flex-1 flex flex-col items-center text-center space-y-8">
-            <div className="relative">
+        <View className="flex-1 px-5 py-8 flex flex-col">
+          <View className="flex-1 flex flex-col items-center text-center space-y-8">
+            <View className="relative">
               <Shield className="w-16 h-16 text-primary" />
               <AlertTriangle className="w-4 h-4 text-orange-500 absolute -top-1 -right-1" />
-            </div>
+            </View>
 
-            <div className="space-y-2 max-w-sm">
-              <h2 className="text-2xl font-medium text-foreground">
+            <View className="space-y-2 max-w-sm items-center">
+              <Text className="text-2xl font-medium text-foreground">
                 Set Duress PIN (Optional)
-              </h2>
-              <p className="text-muted-foreground">
+              </Text>
+              <Text className="text-muted-foreground">
                 Unlocks a decoy view in emergencies
-              </p>
-            </div>
+              </Text>
+            </View>
 
-            <div className="w-full max-w-sm space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm text-muted-foreground">
+            <View className="w-full max-w-sm space-y-4">
+              <View className="space-y-2">
+                <Text className="text-sm text-muted-foreground">
                   Duress PIN
-                </label>
+                </Text>
                 <Input
                   type="password"
                   value={duressPin}
@@ -608,13 +577,13 @@ export function WebApp() {
                   placeholder="Enter 4-8 digits (optional)"
                   className="h-12 text-center text-lg tracking-wider"
                 />
-              </div>
+              </View>
 
               {duressPin && (
-                <div className="space-y-2">
-                  <label className="text-sm text-muted-foreground">
+                <View className="space-y-2">
+                  <Text className="text-sm text-muted-foreground">
                     Confirm Duress PIN
-                  </label>
+                  </Text>
                   <Input
                     type="password"
                     value={confirmDuressPin}
@@ -628,139 +597,127 @@ export function WebApp() {
                     placeholder="Confirm duress PIN"
                     className="h-12 text-center text-lg tracking-wider"
                   />
-                </div>
+                </View>
               )}
 
-              <p className="text-xs text-muted-foreground text-center">
+              <Text className="text-xs text-muted-foreground text-center">
                 Not your main PIN. Change anytime in Settings.
-              </p>
+              </Text>
 
               {/* Why Section */}
-              <div className="mt-6 border-t border-border pt-4">
-                <button
-                  onClick={() =>
-                    setShowDuressWhy(!showDuressWhy)
-                  }
-                  className="flex items-center justify-between w-full p-3 bg-muted/50 rounded-lg text-left"
+              <View className="mt-6 border-t border-border pt-4">
+                <TouchableOpacity
+                  onPress={() => setShowDuressWhy(!showDuressWhy)}
+                  className="flex items-center justify-between w-full p-3 bg-muted/50 rounded-lg flex-row"
                 >
-                  <div className="flex items-center gap-2">
+                  <View className="flex items-center gap-2 flex-row">
                     <HelpCircle className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium text-foreground">
+                    <Text className="text-sm font-medium text-foreground">
                       Why use a Duress PIN?
-                    </span>
-                  </div>
+                    </Text>
+                  </View>
                   {showDuressWhy ? (
                     <ChevronUp className="w-4 h-4 text-muted-foreground" />
                   ) : (
                     <ChevronDown className="w-4 h-4 text-muted-foreground" />
                   )}
-                </button>
+                </TouchableOpacity>
 
                 {showDuressWhy && (
-                  <div className="mt-3 p-4 bg-muted rounded-lg space-y-3">
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-foreground">
+                  <View className="mt-3 p-4 bg-muted rounded-lg space-y-3">
+                    <View className="space-y-2">
+                      <Text className="text-sm font-medium text-foreground">
                         An Attacker You Know
-                      </h4>
-                      <p className="text-xs text-muted-foreground">
-                        If you're forced to unlock the app by an
-                        adversary, entering your duress PIN will
-                        show a clean, empty version instead of
-                        your real data. This protects sensitive
-                        information collected by StealthDetect
-                        from being discovered.
-                      </p>
-                    </div>
+                      </Text>
+                      <Text className="text-xs text-muted-foreground">
+                        If you're forced to unlock the app by an adversary, entering your duress PIN will show a clean, empty version instead of your real data.
+                      </Text>
+                    </View>
 
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-foreground">
+                    <View className="space-y-2">
+                      <Text className="text-sm font-medium text-foreground">
                         Plausible Deniability
-                      </h4>
-                      <p className="text-xs text-muted-foreground">
-                        This gives you the ability to deny
-                        knowledge of the existence that your
-                        phone was being checked for stalkerware.
-                      </p>
-                    </div>
+                      </Text>
+                      <Text className="text-xs text-muted-foreground">
+                        This gives you the ability to deny knowledge of scans being performed on the device.
+                      </Text>
+                    </View>
 
-                    <div className="pt-2 border-t border-border">
-                      <p className="text-xs text-muted-foreground italic">
-                        The duress view will show fake data and
-                        no scan results will be visible.
-                      </p>
-                    </div>
-                  </div>
+                    <View className="pt-2 border-t border-border">
+                      <Text className="text-xs text-muted-foreground italic">
+                        The duress view will show fake data and no scan results will be visible.
+                      </Text>
+                    </View>
+                  </View>
                 )}
-              </div>
-            </div>
-          </div>
+              </View>
+            </View>
 
-          <div className="space-y-3">
-            {duressPin ? (
+            <View className="space-y-3">
+              {duressPin ? (
+                <Button
+                  onPress={() => setSetupStep("ready")}
+                  disabled={!canProceedDuressPin}
+                  className="w-full h-12 bg-primary text-primary-foreground rounded-xl disabled:opacity-50"
+                >
+                  Enable Duress PIN
+                  <ChevronRight className="w-4 h-4 ml-2" />
+                </Button>
+              ) : null}
+
               <Button
-                onClick={() => setSetupStep("ready")}
-                disabled={!canProceedDuressPin}
-                className="w-full h-12 bg-primary text-primary-foreground rounded-xl disabled:opacity-50"
+                onPress={() => setSetupStep("ready")}
+                variant="outline"
+                className="w-full h-12 rounded-xl"
               >
-                Enable Duress PIN
-                <ChevronRight className="w-4 h-4 ml-2" />
+                Skip
               </Button>
-            ) : null}
-
-            <Button
-              onClick={() => setSetupStep("ready")}
-              variant="outline"
-              className="w-full h-12 rounded-xl"
-            >
-              Skip
-            </Button>
-          </div>
-        </div>
-      </div>
+            </View>
+          </View>
+        </View>
+      </View>
     );
   }
 
   if (setupStep === "ready") {
     return (
-      <div className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
+      <View className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center px-5 py-4 h-14">
-          <h1 className="font-medium text-foreground">
+        <View className="flex justify-between items-center px-5 py-4 h-14 flex-row">
+          <Text className="font-medium text-foreground">
             StealthDetect
-          </h1>
-          <span className="text-sm text-muted-foreground">
-            v0.1
-          </span>
-        </div>
+          </Text>
+          <Text className="text-sm text-muted-foreground">v0.1</Text>
+        </View>
 
         {/* Content */}
-        <div className="flex-1 px-5 py-8 flex flex-col">
-          <div className="flex-1 flex flex-col items-center justify-center text-center space-y-8">
+        <View className="flex-1 px-5 py-8 flex flex-col">
+          <View className="flex-1 flex flex-col items-center justify-center text-center space-y-8">
             <Radar className="w-16 h-16 text-primary" />
 
-            <div className="space-y-2 max-w-sm">
-              <h2 className="text-2xl font-medium text-foreground">
+            <View className="space-y-2 max-w-sm items-center">
+              <Text className="text-2xl font-medium text-foreground">
                 All Set
-              </h2>
-              <p className="text-muted-foreground">
+              </Text>
+              <Text className="text-muted-foreground">
                 We're ready to analyze your device
-              </p>
-            </div>
-          </div>
+              </Text>
+            </View>
+          </View>
 
           {/* Progress dots - all completed */}
-          <div className="flex justify-center space-x-2 mb-8">
+          <View className="flex justify-center space-x-2 mb-8 flex-row">
             {[0, 1, 2, 3].map((index) => (
-              <div
+              <View
                 key={index}
                 className="w-2 h-2 rounded-full bg-primary"
               />
             ))}
-          </div>
+          </View>
 
-          <div className="space-y-3">
+          <View className="space-y-3">
             <Button
-              onClick={() => setSetupStep("scan-progress")}
+              onPress={() => setSetupStep("scan-progress")}
               className="w-full h-12 bg-primary text-primary-foreground rounded-xl"
             >
               Start First Scan
@@ -768,22 +725,22 @@ export function WebApp() {
             </Button>
 
             <Button
-              onClick={() => setSetupStep("home")}
+              onPress={() => setSetupStep("home")}
               variant="outline"
               className="w-full h-12 rounded-xl"
             >
               Maybe Later
             </Button>
-          </div>
-        </div>
+          </View>
+        </View>
 
         {/* Footer */}
-        <div className="px-5 py-4 text-center">
-          <p className="text-xs text-muted-foreground">
+        <View className="px-5 py-4 items-center">
+          <Text className="text-xs text-muted-foreground">
             Identify. Report. Secure.
-          </p>
-        </div>
-      </div>
+          </Text>
+        </View>
+      </View>
     );
   }
 
@@ -793,157 +750,115 @@ export function WebApp() {
 
   if (setupStep === "faq") {
     return (
-      <div className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
+      <View className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center px-5 py-4 h-14">
-          <button
-            onClick={() => setSetupStep("start")}
-            className="text-muted-foreground"
+        <View className="flex justify-between items-center px-5 py-4 h-14 flex-row">
+          <TouchableOpacity
+            onPress={() => setSetupStep("start")}
           >
-            ← Back
-          </button>
-          <h1 className="font-medium text-foreground">FAQ</h1>
-          <div className="w-12" />
-        </div>
+            <Text className="text-muted-foreground">← Back</Text>
+          </TouchableOpacity>
+          <Text className="font-medium text-foreground">FAQ</Text>
+          <View className="w-12" />
+        </View>
 
         {/* FAQ Content */}
-        <div className="flex-1 px-5 py-8">
-          <div className="space-y-6">
-            <div className="text-center mb-8">
+        <ScrollView className="flex-1 px-5 py-8">
+          <View className="space-y-6">
+            <View className="text-center mb-8 items-center">
               <HelpCircle className="w-20 h-20 text-primary mx-auto mb-4" />
-              <h2 className="mb-2">
+              <Text className="mb-2 text-lg font-semibold">
                 Frequently Asked Questions
-              </h2>
-              <p className="text-muted-foreground">
+              </Text>
+              <Text className="text-muted-foreground text-center">
                 Everything you need to know about StealthDetect
-              </p>
-            </div>
+              </Text>
+            </View>
 
-            <div className="space-y-4">
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">
-                  StealthDetect has not found anything
-                  malicious, am I safe?{" "}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  No. StealthDetect intercepts network flows
-                  from the analysed device and tries to find
-                  something abnormal from them. StealthDetect
-                  can only detect live and communicating
-                  requests from infected devices. Some network
-                  requests can easily prevent to be intercepted
-                  or hide their malicious communications in
-                  legitimate network flows.
-                </p>
-              </div>
+            <View className="space-y-4">
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">
+                  StealthDetect has not found anything malicious, am I safe?
+                </Text>
+                <Text className="text-sm text-muted-foreground">
+                  No. StealthDetect intercepts network flows from the analyzed device and tries to find something abnormal from them.
+                </Text>
+              </View>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">
-                  Does StealthDetect store my device's
-                  communications?
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  At StealthDetect, We believe privacy is a
-                  fundamental human right. All data done by the
-                  scans will only be stored on your device and
-                  we will not have access to this. Everything is
-                  processed and stored directly on your device.
-                  No data is sent to external servers, ensuring
-                  complete privacy and control over your
-                  information.
-                </p>
-              </div>
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">
+                  Does StealthDetect store my device's communications?
+                </Text>
+                <Text className="text-sm text-muted-foreground">
+                  At StealthDetect, We believe privacy is a fundamental human right. All data done by the scans will only be stored on your device and we will not have access to this. Everything is processed and stored directly on your device. No data is sent to external servers, ensuring complete privacy and control over your information.
+                </Text>
+              </View>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">
                   Is StealthDetect a forensics tool?
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  No. StealthDetect is not a forensics tool so
-                  it may miss signs of more hidden based
-                  stalkerware or spyware. If you think that your
-                  device is or have been compromised, please
-                  check out Mobile Verification Toolkit Kit from
-                  Amnesty International.
-                </p>
-              </div>
+                </Text>
+                <Text className="text-sm text-muted-foreground">
+                  No. StealthDetect is not a forensics tool so it may miss signs of more hidden based stalkerware or spyware. If you think that your device is or have been compromised, please check out Mobile Verification Toolkit Kit from Amnesty International.
+                </Text>
+              </View>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">
-                  What is a Duress Pin and why should I use
-                  it?{" "}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  A Duress Pin is a special code that is entered
-                  on a device to trigger a fake screen and show
-                  fake data when you are being forced to provide
-                  your normal PIN under threat. This is critical
-                  for victims of domestic violence as this may
-                  protect the scan data from the abuser.
-                </p>
-              </div>
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">
+                  What is a Duress Pin and why should I use it?{" "}
+                </Text>
+                <Text className="text-sm text-muted-foreground">
+                  A Duress Pin is a special code that is entered on a device to trigger a fake screen and show fake data when you are being forced to provide your normal PIN under threat. This is critical for victims of domestic violence as this may protect the scan data from the abuser.
+                </Text>
+              </View>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">
-                  What should I do if StealthDetect finds
-                  stalkerware on my device?{" "}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  If there is a positive sign of stalkerware on
-                  your device, consult with a domestic violence
-                  shelter or local law enforcement to understand
-                  the next steps of your safety plan.
-                  StealthDetect can have false positives so be
-                  sure to reach out to the Coalition Against
-                  Stalkerware for any questions.
-                </p>
-              </div>
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">
+                  What should I do if StealthDetect finds stalkerware on my device?{" "}
+                </Text>
+                <Text className="text-sm text-muted-foreground">
+                  If there is a positive sign of stalkerware on your device, consult with a domestic violence shelter or local law enforcement to understand the next steps of your safety plan. StealthDetect can have false positives so be sure to reach out to the Coalition Against Stalkerware for any questions.
+                </Text>
+              </View>
 
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">
                   Can I change my PIN later?
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  Yes, you can change both your main PIN and
-                  duress PIN anytime in Settings. You'll need to
-                  enter your current PIN to make changes.
-                </p>
-              </div>
-              <div className="p-4 bg-muted rounded-lg">
-                <h3 className="mb-2">
+                </Text>
+                <Text className="text-sm text-muted-foreground">
+                  Yes, you can change both your main PIN and duress PIN anytime in Settings. You'll need to enter your current PIN to make changes.
+                </Text>
+              </View>
+              <View className="p-4 bg-muted rounded-lg">
+                <Text className="mb-2 font-semibold">
                   Is StealthDetect an antivirus?{" "}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  No. StealthDetect can only detect indicators
-                  of compromise via network traffic and alert
-                  the user whether or not there is stalkerware
-                  on the user's phone. StealthDetect will not
-                  remove stalkerware off the device due to
-                  safety risks for the victim.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
+                </Text>
+                <Text className="text-sm text-muted-foreground">
+                  No. StealthDetect can only detect indicators of compromise via network traffic and alert the user whether or not there is stalkerware on the user's phone. StealthDetect will not remove stalkerware off the device due to safety risks for the victim.
+                </Text>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
 
         {/* Action Button */}
-        <div className="px-5 py-4">
+        <View className="px-5 py-4">
           <Button
-            onClick={() => setSetupStep("home")}
+            onPress={() => setSetupStep("home")}
             className="w-full h-12 bg-primary text-primary-foreground rounded-xl"
           >
             Continue to App
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
-        </div>
+        </View>
 
         {/* Footer */}
-        <div className="px-5 py-4 text-center">
-          <p className="text-xs text-muted-foreground">
+        <View className="px-5 py-4 items-center">
+          <Text className="text-xs text-muted-foreground">
             Identify. Report. Secure.
-          </p>
-        </div>
-      </div>
+          </Text>
+        </View>
+      </View>
     );
   }
 
@@ -956,38 +871,35 @@ export function WebApp() {
   // Dashboard PIN entry screen
   if (setupStep === "dashboard-pin") {
     return (
-      <div className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
+      <View className="w-full max-w-[390px] mx-auto min-h-screen bg-background flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center px-5 py-4 h-14">
-          <button
-            onClick={() => setSetupStep("home")}
-            className="text-muted-foreground"
+        <View className="flex justify-between items-center px-5 py-4 h-14 flex-row">
+          <TouchableOpacity
+            onPress={() => setSetupStep("home")}
           >
-            ← Back
-          </button>
-          <h1 className="font-medium text-foreground">
-            Enter PIN
-          </h1>
-          <div className="w-12" />
-        </div>
+            <Text className="text-muted-foreground">← Back</Text>
+          </TouchableOpacity>
+          <Text className="font-medium text-foreground">Enter PIN</Text>
+          <View className="w-12" />
+        </View>
 
         {/* Content */}
-        <div className="flex-1 px-5 py-8 flex flex-col">
-          <div className="flex-1 flex flex-col items-center justify-center text-center space-y-8">
-            <div className="p-4 bg-primary/10 rounded-full">
+        <View className="flex-1 px-5 py-8 flex flex-col">
+          <View className="flex-1 flex flex-col items-center justify-center text-center space-y-8">
+            <View className="p-4 bg-primary/10 rounded-full">
               <Shield className="w-12 h-12 text-primary" />
-            </div>
+            </View>
 
-            <div className="space-y-2 max-w-sm">
-              <h2 className="text-2xl font-medium text-foreground">
+            <View className="space-y-2 max-w-sm items-center">
+              <Text className="text-2xl font-medium text-foreground">
                 Access Dashboard
-              </h2>
-              <p className="text-muted-foreground">
+              </Text>
+              <Text className="text-muted-foreground">
                 Enter your PIN to access the main dashboard
-              </p>
-            </div>
+              </Text>
+            </View>
 
-            <div className="w-full max-w-sm space-y-4">
+            <View className="w-full max-w-sm space-y-4">
               <Input
                 type="password"
                 value={currentPin}
@@ -1002,26 +914,26 @@ export function WebApp() {
                 className="h-12 text-center text-lg tracking-wider"
                 maxLength={8}
               />
-            </div>
-          </div>
+            </View>
+          </View>
 
           <Button
-            onClick={() => handleDashboardPinEntry(currentPin)}
+            onPress={() => handleDashboardPinEntry(currentPin)}
             disabled={!currentPin || currentPin.length < 4}
             className="w-full h-12 bg-primary text-primary-foreground rounded-xl disabled:opacity-50"
           >
             Access Dashboard
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
-        </div>
+        </View>
 
         {/* Footer */}
-        <div className="px-5 py-4 text-center">
-          <p className="text-xs text-muted-foreground">
+        <View className="px-5 py-4 items-center">
+          <Text className="text-xs text-muted-foreground">
             Your PIN protects access to sensitive data
-          </p>
-        </div>
-      </div>
+          </Text>
+        </View>
+      </View>
     );
   }
 
@@ -1053,6 +965,10 @@ export function WebApp() {
 
 // Main entry component that provides a persistent SQLite context
 export default function App() {
+  if (Platform.OS === "web") {
+    return <WebApp />;
+  }
+
   return (
     <SQLiteProvider databaseName="stealthdetect.db">
       <WebApp />
