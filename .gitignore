@@ -1,0 +1,35 @@
+# Node / JS dependencies
+node_modules/
+StealthDetect/node_modules/
+
+# Build outputs
+StealthDetect/dist/
+StealthDetect/build/
+StealthDetect/.vite/
+
+# Capacitor / Android build artifacts
+StealthDetect/android/.gradle/
+StealthDetect/android/build/
+StealthDetect/android/app/build/
+StealthDetect/android/capacitor-cordova-android-plugins/build/
+StealthDetect/android/capacitor-cordova-android-plugins/.gradle/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE / OS files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+
+# Env files (if you ever add them)
+.env
+.env.*
+
