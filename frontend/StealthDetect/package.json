@@ -21,7 +21,7 @@
     "embla-carousel": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "expo": "~54.0.20",
-    "expo-sqlite": "~16.0.8",
+    "expo-sqlite": "~16.0.9",
     "expo-status-bar": "~3.0.8",
     "install": "^0.13.0",
     "lucide-react": "^0.548.0",

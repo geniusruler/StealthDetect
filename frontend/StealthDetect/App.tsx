@@ -1,13 +1,11 @@
 import {
   useState,
   useEffect,
-  useMemo,
   useCallback,
   useRef,
 } from "react";
 
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -18,7 +16,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { Checkbox } from "./ui/checkbox";
 import { showToast } from "./lib/toast";
 import { StartScreen } from "./components/StartScreen";
 import { SetupPinsScreen } from "./components/SetupPinsScreen";
@@ -29,7 +26,7 @@ import { PermissionsScreen } from "./components/PermissionsScreen";
 import { HomeScreen } from "./components/HomeScreen";
 import { MainDashboard } from "./components/MainDashboard";
 import { ScanInProgress } from "./components/ScanInProgress";
-import { ScanReport } from "./components/ScanReport"
+import { ScanReport } from "./components/ScanReport";
 
 
 import {
@@ -42,27 +39,7 @@ import {
   HelpCircle,
 } from "lucide-react";
 
-// Import: SQLite Local Database
-import { initDB } from "./db/db";
-
-type SetupStep =
-  | "start"
-  | "welcome"
-  | "permissions"
-  | "main-pin"
-  | "duress-pin"
-  | "ready"
-  | "home"
-  | "dashboard-pin"
-  | "main-dashboard"
-  | "faq"
-  | "decoy"
-  | "setup-pins"
-  | "enter-pin"
-  | "scan-progress"
-  | "scan-report"
-  | "network-map";
- // include all screens you use
+import { SQLiteProvider } from "expo-sqlite";
 
 // Move platform detection outside component to avoid recalculation
 const isIOSDevice =
@@ -72,7 +49,7 @@ const isIOSDevice =
 // Simple validation function - no need to memoize
 const validatePin = (pin: string) => /^\d{4,8}$/.test(pin);
 
-function WebApp() {
+export function WebApp() {
   const [showExplainer, setShowExplainer] = useState(false);
   const [setupStep, setSetupStep] = useState<
     | "start"
@@ -1074,285 +1051,11 @@ function WebApp() {
   );
 }
 
-type NativeScreen = "landing" | "dashboard" | "scanProgress" | "report";
-
-function NativeApp() {
-  const [screen, setScreen] = useState<NativeScreen>("landing");
-  const [isScanning, setIsScanning] = useState(false);
-  const [lastScan, setLastScan] = useState<string | null>(null);
-  const scanTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleStartScan = useCallback(() => {
-    if (isScanning) {
-      return;
-    }
-    setIsScanning(true);
-    setScreen("scanProgress");
-    showToast("Starting deep scan");
-    scanTimeoutRef.current = setTimeout(() => {
-      setIsScanning(false);
-      setLastScan(new Date().toLocaleTimeString());
-      setScreen("report");
-      showToast("Scan complete", "No threats detected.");
-      scanTimeoutRef.current = null;
-    }, 2000);
-  }, [isScanning]);
-
-  const handleCancelScan = useCallback(() => {
-    if (scanTimeoutRef.current) {
-      clearTimeout(scanTimeoutRef.current);
-      scanTimeoutRef.current = null;
-    }
-    setIsScanning(false);
-    setScreen("dashboard");
-    showToast("Scan cancelled");
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      if (scanTimeoutRef.current) {
-        clearTimeout(scanTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  return (
-    <SafeAreaView style={nativeStyles.safeArea}>
-      <ScrollView contentContainerStyle={nativeStyles.container}>
-        {screen === "landing" && (
-          <View style={nativeStyles.card}>
-            <Text style={nativeStyles.title}>StealthDetect</Text>
-            <Text style={nativeStyles.subtitle}>
-              Privacy-first stalkerware defense that runs directly on your device.
-            </Text>
-            <NativeButton
-              label="Continue"
-              onPress={() => setScreen("dashboard")}
-            />
-            <NativeButton
-              label="Security Checklist"
-              variant="outline"
-              onPress={() =>
-                showToast(
-                  "Permissions",
-                  "Enable system usage and notification access for the most accurate protection.",
-                )
-              }
-            />
-          </View>
-        )}
-
-        {screen === "dashboard" && (
-          <View style={nativeStyles.card}>
-            <Text style={nativeStyles.title}>Device Status</Text>
-            <Text style={nativeStyles.body}>Protected & Monitoring</Text>
-            {lastScan && (
-              <Text style={nativeStyles.caption}>
-                Last scan completed at {lastScan}
-              </Text>
-            )}
-            <View style={nativeStyles.badgeRow}>
-              <View style={[nativeStyles.badge, nativeStyles.badgeSpacer]}>
-                <Text style={nativeStyles.badgeText}>Firewall: On</Text>
-              </View>
-              <View style={nativeStyles.badge}>
-                <Text style={nativeStyles.badgeText}>DNS Filter: Active</Text>
-              </View>
-            </View>
-            <NativeButton
-              label={isScanning ? "Starting scan..." : "Start Deep Scan"}
-              onPress={handleStartScan}
-              disabled={isScanning}
-            />
-            <NativeButton
-              label="View Latest Report"
-              variant="outline"
-              onPress={() => setScreen("report")}
-            />
-            <NativeButton
-              label="Back to Welcome"
-              variant="outline"
-              onPress={() => setScreen("landing")}
-            />
-          </View>
-        )}
-
-        {screen === "scanProgress" && (
-          <View style={nativeStyles.card}>
-            <Text style={nativeStyles.title}>Deep Scan In Progress</Text>
-            <Text style={nativeStyles.body}>
-              We are inspecting recent network activity and installed apps for anomalies.
-            </Text>
-            <NativeButton
-              label="Cancel Scan"
-              variant="outline"
-              onPress={handleCancelScan}
-            />
-          </View>
-        )}
-
-        {screen === "report" && (
-          <View style={nativeStyles.card}>
-            <Text style={nativeStyles.title}>Latest Scan Report</Text>
-            <Text style={nativeStyles.body}>
-              No suspicious patterns were detected.
-            </Text>
-            {lastScan && (
-              <Text style={nativeStyles.caption}>Completed at {lastScan}</Text>
-            )}
-            <NativeButton
-              label="Run Another Scan"
-              onPress={() => setScreen("dashboard")}
-            />
-            <NativeButton
-              label="Back to Dashboard"
-              variant="outline"
-              onPress={() => setScreen("dashboard")}
-            />
-          </View>
-        )}
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-type NativeButtonProps = {
-  label: string;
-  onPress: () => void;
-  variant?: "primary" | "outline";
-  disabled?: boolean;
-};
-
-function NativeButton({
-  label,
-  onPress,
-  variant = "primary",
-  disabled = false,
-}: NativeButtonProps) {
-  const buttonStyle = [
-    nativeStyles.buttonBase,
-    variant === "outline"
-      ? nativeStyles.buttonOutline
-      : nativeStyles.buttonPrimary,
-    disabled && nativeStyles.buttonDisabled,
-  ];
-
-  const textStyle = [
-    nativeStyles.buttonText,
-    variant === "outline"
-      ? nativeStyles.buttonTextOutline
-      : nativeStyles.buttonTextPrimary,
-  ];
-
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      disabled={disabled}
-      activeOpacity={0.85}
-      style={buttonStyle}
-    >
-      <Text style={textStyle}>{label}</Text>
-    </TouchableOpacity>
-  );
-}
-
-const nativeStyles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: "#0f172a",
-  },
-  container: {
-    flexGrow: 1,
-    padding: 24,
-    backgroundColor: "#0f172a",
-  },
-  card: {
-    backgroundColor: "#111827",
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "rgba(148, 163, 184, 0.2)",
-  },
-  title: {
-    fontSize: 22,
-    fontWeight: "600",
-    color: "#f8fafc",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: "#cbd5f5",
-    marginBottom: 16,
-  },
-  body: {
-    fontSize: 14,
-    color: "#cbd5f5",
-    marginBottom: 12,
-  },
-  caption: {
-    fontSize: 12,
-    color: "#94a3b8",
-    marginTop: 8,
-  },
-  badgeRow: {
-    flexDirection: "row",
-    marginTop: 12,
-  },
-  badge: {
-    flex: 1,
-    backgroundColor: "rgba(37, 99, 235, 0.15)",
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 999,
-    alignItems: "center",
-  },
-  badgeSpacer: {
-    marginRight: 8,
-  },
-  badgeText: {
-    color: "#bfdbfe",
-    fontSize: 12,
-    fontWeight: "500",
-  },
-  buttonBase: {
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 18,
-    marginTop: 12,
-    alignItems: "center",
-  },
-  buttonPrimary: {
-    backgroundColor: "#2563eb",
-  },
-  buttonOutline: {
-    borderWidth: 1,
-    borderColor: "#2563eb",
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  buttonTextPrimary: {
-    color: "#f8fafc",
-  },
-  buttonTextOutline: {
-    color: "#bfdbfe",
-  },
-});
-
+// Main entry component that provides a persistent SQLite context
 export default function App() {
-    // Init: Database connection
-    useEffect(() => {
-        initDB();
-    }, []);
-
-    if (Platform.OS === "web") {
-        return <WebApp />;
-    }
-
-    return <NativeApp />;
+  return (
+    <SQLiteProvider databaseName="stealthdetect.db">
+      <WebApp />
+    </SQLiteProvider>
+  );
 }

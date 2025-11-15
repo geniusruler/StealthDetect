@@ -3,14 +3,13 @@ import * as SQLite from "expo-sqlite";
 import { ScanSessionDao } from "./dao/scanSessionDao";
 
 // Initialize and export the database connection
-const db = SQLite.openDatabaseSync("SD.db");
+const db = SQLite.openDatabaseSync("stealthdetect.db");
 
-// Initialize the database schema if it doesn't exist
-export const initDB = () => {
-    db.withTransactionSync(tx => {
-        ScanSessionDao.createTable();
-        tx.executeSql(require('./schema').createIocMatchTable);
-        tx.executeSql(require('./schema').createUserProfileTable);
-        tx.executeSql(require('./schema').createAuthCredentialTable);
+// Initialize the database schema at once, create all necessary tables if they don't exist
+const initDB = async () => {
+    db.withTransactionSync(async () => {
+        db.execSync(require('./schema').createAllTables);
     });
 }
+
+export default initDB();
